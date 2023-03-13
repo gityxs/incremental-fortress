@@ -4148,35 +4148,35 @@ function getGuidePage(){
 
   switch (misc_settings.guide_page) {
 
-    case 'Messengers':
+    case '信使':
       page_contents=guidebook.messengers;
       break;
 
-    case 'Reincarnation':
+    case '投胎':
       page_contents=guidebook.reincarnation;
       break;
 
-    case 'Wine Cellar':
+    case '酒窖':
       page_contents=guidebook.winecellar;
       break;
 
-    case 'Wicked Quests':
+    case '邪恶的任务':
       page_contents=guidebook.wicked;
       break;
 
-    case 'Fire Multiplier':
+    case '火力乘数':
       page_contents=guidebook.fire;
       break;
 
-    case 'Giant Multiplier':
+    case '巨人乘数':
       page_contents=guidebook.giant;
       break;
 
-    case 'Diamonds':
+    case '钻石':
       page_contents=guidebook.diamonds;
       break;
 
-    case 'Graveyard':
+    case '墓地':
       page_contents=guidebook.graveyard;
       break;
 
@@ -4184,15 +4184,15 @@ function getGuidePage(){
       page_contents=guidebook.smaug;
       break;
 
-    case 'Medallions':
+    case '奖章':
       page_contents=guidebook.medallions;
       break;
 
-    case 'Alchemist':
+    case '炼金术士':
       page_contents=guidebook.alchemist;
       break;
 
-    case 'Garden':
+    case '花园':
       page_contents=guidebook.garden;
       break;
 
@@ -4200,23 +4200,23 @@ function getGuidePage(){
 
 
 
-    case 'Offline mining':
+    case '离线挖矿':
       page_contents=guidebook.offline;
       break;
 
-    case 'End of content':
+    case '内容结束':
       page_contents=guidebook.eoc;
       break;
 
-    case 'Compatibility':
+    case '兼容性':
       page_contents=guidebook.compatibility;
       break;
 
-    case 'Known issues':
+    case '已知的问题':
       page_contents=guidebook.known_issues;
       break;
 
-    case 'Future plans':
+    case '未来的计划':
       page_contents=guidebook.future;
       break;
   
