@@ -1,731 +1,1272 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
 <head>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Text&family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text&family=Montserrat&display=swap" rel="stylesheet">
 
-<title>IF</title>
-<link type="text/css" href="dark.css" rel="Stylesheet"/>
-<script type="text/javascript" src="jq/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="jq/lz-string.min.js"></script>
-<script type="text/javascript" src="jq/howler.core.min.js"></script>
-<script type="text/javascript" src="jq/cache.js"></script>
-<script type="text/javascript" src="jq/script.js"></script>
+    <title>IF</title>
+    <link type="text/css" href="dark.css" rel="Stylesheet" />
+    <script type="text/javascript" src="jq/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="jq/lz-string.min.js"></script>
+    <script type="text/javascript" src="jq/howler.core.min.js"></script>
+    <script type="text/javascript" src="jq/randomseed.min.js"></script>
+    <script type="text/javascript" src="jq/cache.js"></script>
+    <script type="text/javascript" src="jq/selectors.js"></script>
+    <script type="text/javascript" src="jq/script.js"></script>
 
 </head>
 
 <!-- Google tag (gtag.js) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-VVGFHTG0WH"></script>
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-RVHC1CG0KT"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-VVGFHTG0WH');
+  gtag('config', 'G-RVHC1CG0KT');
 </script> -->
 
 
 <body>
-  <script src="chs.js"></script>
-  <script src="core.js"></script>
-  <div class="header">
-    <table class="header" width="100%">
-      <tr>
-        <td width="25%" class="left">
-          Reincarnation Mana: <span class="yellow" id="rmana_label">0</span><br>
-          Next mana in: <span class="yellow" id="nextrmana_label"></span>
-        </td>
-        <td width="25%" class="left">
-          <div id="rmana_multiplier_label"></div>
-        </td>
-        <td width="25%" class="left">
-          <button class="reincarnate" id="reincarnate_button">Reincarnate</button>
-        </td>
-        <td class="right">
-          <span class="game_title">Incremental Fortress</span>
-        </td>
-      </tr>
+    <script src="chs.js"></script>
+    <script src="core.js"></script>
+    <div class="header">
+        <table id="topmost_header" class="header" width="100%">
+            <tr>
+                <td width="25%" class="left">
+                    Mana: <span class="yellow" id="rmana_label">0</span><br> Next mana in: <span class="yellow" id="nextrmana_label"></span>
+                </td>
+                <td width="25%" class="left">
+                    <div id="rmana_multiplier_label"></div>
+                </td>
+                <td width="25%" class="left">
+                    <button class="reincarnate" id="reincarnate_button" style="display:none;">Transmigrate</button>
+                </td>
+                <td class="right">
+                    <span class="game_title">Incremental Fortress</span>
+                </td>
+            </tr>
 
-      <tbody id="reincarnation_options_block">
+        </table>
+
+        <div class="indicators" id="indicators_table">
+
+            <table class="indicators">
+                <tr id="temple_block">
+                    <td class="skycat">
+                        <button class="skycat" id="temple_button">Altar of Winds</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="counter" id="counter1_label"></span><br>
+                        <span class="rate" id="rate1_label"></span>
+                    </td>
+                </tr>
+            </table>
+
+
+
+
+
+        </div>
+
+    </div>
+
+    <div id="brokensave_block" class="brokensave">
+        <p>If you're seeing this, you must have tried to load either a broken or an incompatible save.<br><br>In order to reset the game, please google on how to access Local Storage of your browser and delete the save called <b>incremental_fortress0.5</b></p>
+
+        <p>For Chrome, see here: <a class="guide_link" href="https://developer.chrome.com/docs/devtools/storage/localstorage/" target="_blank">https://developer.chrome.com/docs/devtools/storage/localstorage/</a></p>
+
+        <p>For Firefox, see here: <a class="guide_link" href="https://firefox-source-docs.mozilla.org/devtools-user/storage_inspector/local_storage_session_storage/index.html" target="_blank">https://firefox-source-docs.mozilla.org/devtools-user/storage_inspector/local_storage_session_storage/index.html</a></p>
+    </div>
+
+    <table class="towers_holder" id="navigation_block">
         <tr>
-          <td class="center" colspan="4">
-            <br><br>
-            <div>Choose an option</div><br>
-            <button class="reincarnate" id="reincarnation_winecellar" style="display:none;">Unlock Wine Cellar</button>&nbsp;
-            <button class="reincarnate" id="reincarnation_quests">
-              <b>Unlock Wicked Quests</b>
-              <div class="tiny">
-                Completing them provides you with a permanent Wicked Multiplier
-              </div>
-            </button>&nbsp;
+            <td colspan="5">
 
-            <button class="reincarnate" id="reincarnation_dwarves">
-              <b>Dwarf University</b>
-              <div class="tiny">
-                Dwarf Instructor and Dwarf Scholar become x10 more effective
-              </div>
-            </button>&nbsp;
-            
-            <button class="reincarnate" id="reincarnation_noupgrades">Reincarnate without upgrades</button>&nbsp;
-            <button class="reincarnate" id="reincarnation_cancel">Cancel</button>
-          </td>
+                <div class="nav_left" id="nav_left">Hall of Giants</div>
+                <div class="nav_right" id="nav_right">Necropolis</div>
+
+            </td>
         </tr>
-      </tbody>
+    </table>
+
+    <table class="towers_holder" id="graveyard_block">
+        <tr>
+            <td>
+
+                <table class="tower">
+
+                    <tr>
+                        <td class="title3 bottom">Necropolis</td>
+                    </tr>
+
+                    <tbody id="graveyard_body">
+
+                        <tr>
+                            <td>
+                                <table class="graveyard">
+                                    <tr>
+                                        <td colspan="4" class="multiplier">
+                                            <div id="graveyard_multiplier_label"></div>
+                                            <button class="button5" id="next_target_button"></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="multiplier">
+                                            <div class="block2" id="da1_block"></div>
+                                        </td>
+                                        <td class="multiplier">
+                                            <div class="block2" id="da2_block"></div>
+                                        </td>
+                                        <td class="multiplier">
+                                            <div class="block2" id="da3_block"></div>
+                                        </td>
+                                        <td class="multiplier">
+                                            <div class="block2" id="da4_block"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="multiplier">
+                                            <button class="button5" id="next_da_button">>>></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <div class="counter" id="graveyard_counter_label"></div>
+                                            <div class="rate" id="graveyard_rate_label"></div>
+                                        </td>
+                                        <td>
+                                            <div class="rate_right" id="rsouls_label"></div>
+                                            <div class="rate_right" id="rsouls_multiplier_label"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <button class="button1" id="skeletons_button">Skeletons: 0</button>
+                                            <button class="button1" id="spirits_button">Spirits: 0</button>
+                                            <button class="button1" id="specters_button">Specters: 0</button>
+                                            <button class="button1" id="succubi_button">Succubi: 0</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <button class="graveyard_bai" id="graveyard_buy1">Raise 1</button>
+                                            <button class="graveyard_bai" id="graveyard_buy10">Raise 10</button>
+                                            <button class="graveyard_bai" id="graveyard_buy100">Raise 100</button><br><br>
+                                            <hr class="graveyard">
+                                        </td>
+                                    </tr>
+                                    <tbody id="necropolis2_block">
+                                        <tr>
+                                            <td colspan="4">
+                                                <button class="button1" id="ghouls_button">Ghouls: 0</button>
+                                                <button class="button1" id="ghasts_button">Ghasts: 0</button>
+                                                <button class="button1" id="grimlords_button">Grimlords: 0</button>
+                                                <button class="button1" id="grandliches_button">Grandliches: 0</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <button class="graveyard2_bai" id="graveyard2_buy1">Raise 1</button>
+                                                <button class="graveyard2_bai" id="graveyard2_buy10">Raise 10</button>
+                                                <button class="graveyard2_bai" id="graveyard2_buy100">Raise 100</button><br><br>
+                                                <hr class="graveyard">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="necropolis2_lock">
+                                        <tr>
+                                            <td colspan="4">
+                                                <span class="tiny">Buy <b>50 Succubi</b> to unlock</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="necropolis3_block">
+                                        <tr>
+                                            <td colspan="4">
+                                                <button class="button1" id="areds_button">Areds: 0</button>
+                                                <button class="button1" id="ardemators_button">Ardemators: 0</button>
+                                                <button class="button1" id="archsentinels_button">Archsentinels: 0</button>
+                                                <button class="button1" id="andlyns_button">Andlyns: 0</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <button class="graveyard3_bai" id="graveyard3_buy1">Raise 1</button>
+                                                <button class="graveyard3_bai" id="graveyard3_buy10">Raise 10</button>
+                                                <button class="graveyard3_bai" id="graveyard3_buy100">Raise 100</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="necropolis3_lock">
+                                        <tr>
+                                            <td colspan="4">
+                                                <span class="tiny">Buy <b>50 Grandliches</b> to unlock</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                    <tbody id="graveyard_lock">
+                        <tr>
+                            <td>
+                                <span class="tiny"><b>Double fortified warlocks</b> to unlock</span>
+                            </td>
+                        </tr>
+                    </tbody>
+
+
+
+                </table>
+
+            </td>
+            <td width="20%" id="necromancer_block">
+                <table class="tower">
+
+                    <tr>
+                        <td class="title3 bottom">Necromancer</td>
+                    </tr>
+
+                    <tr id="necromancer_buymax_block" style="display: none;">
+                        <td>
+                            <button class="necromancer_buymax" id="necromancer_buymax" disabled="disabled">Buy max</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td id="necromancer_upgrades">
+                        </td>
+                    </tr>
+
+
+
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <table class="towers_holder" id="hog_block">
+        <tr>
+            <td>
+
+                <table class="tower">
+                    <tr>
+                        <td class="title2 bottom">Hall of Giants</td>
+                    </tr>
+
+                    <tbody id="hog_body">
+
+
+                        <tr>
+                            <td>
+                                <table class="hog">
+                                    <tr>
+                                        <td colspan="4" class="multiplier" id="hog_multiplier_label"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="block1" id="giant1_button"></div>
+                                            <button class="button4" id="diamonds1_button"></button>
+                                        </td>
+                                        <td>
+                                            <div class="block1" id="giant2_button"></div>
+                                            <button class="button4" id="diamonds2_button"></button>
+                                        </td>
+                                        <td>
+                                            <div class="block1" id="giant3_button"></div>
+                                            <button class="button4" id="diamonds3_button"></button>
+                                        </td>
+                                        <td>
+                                            <div class="block1" id="giant4_button"></div>
+                                            <button class="button4" id="diamonds4_button"></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="block1" id="giant5_button"></div>
+                                            <button class="button4" id="diamonds5_button"></button>
+                                        </td>
+                                        <td>
+                                            <div class="block1" id="giant6_button"></div>
+                                            <button class="button4" id="diamonds6_button"></button>
+                                        </td>
+                                        <td>
+                                            <div class="block1" id="giant7_button"></div>
+                                            <button class="button4" id="diamonds7_button"></button>
+                                        </td>
+                                        <td>
+                                            <div class="block1" id="giant8_button"></div>
+                                            <button class="button4" id="diamonds8_button"></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <button class="hog_bai" id="hog_buymax">Buy several</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="centered">
+                                <button class="button3" id="recast_button">Recast Giants</button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody id="hog_lock">
+                        <tr>
+                            <td>
+                                <span class="tiny"><b>Double fortified wizards</b> to unlock</span>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <table class="towers_holder" id="museum_block">
+        <tr>
+            <td>
+                <table class="museum">
+                    <tr>
+                        <td class="title">Treasury</td>
+                    </tr>
+                    <tbody id="museum_body">
+
+                        <tr id="museum_key_block" style="display:none;">
+                            <td>
+                                <button class="button6_museumitem">
+                  <img class="key_sprite" src="img/key.svg" alt="Treasury Key"><br>
+                  <span class="tinier">Reach 5000% to activate</span>
+                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td id="museum_multiplier_label"></td>
+                        </tr>
+
+                        <tr>
+                            <td id="museum_list"></td>
+                        </tr>
+                    </tbody>
+
+                    <tbody id="museum_lock">
+                        <tr>
+                            <td>
+                                <span class="tiny"><b>Double fortified humans</b> to unlock</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <table class="towers_holder" id="fortress_block">
+
+
+
+
+
+        <tr id="quests_block">
+            <td colspan="5">
+
+                <table class="quests">
+                    <tbody id="quests_body">
+                        <tr>
+                            <td class="title" colspan="2">Wicked Quests</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                66 Wizards
+                                <div id="quest1_label"></div>
+                                <button class="button2" id="quest1_button">Claim</button>
+                            </td>
+                            <td>
+                                66 Warlocks
+                                <div id="quest2_label"></div>
+                                <button class="button2" id="quest2_button">Claim</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                66 Witches
+                                <div id="quest3_label"></div>
+                                <button class="button2" id="quest3_button">Claim</button>
+                            </td>
+                            <td>
+                                66 Wyverns
+                                <div id="quest4_label"></div>
+                                <button class="button2" id="quest4_button">Claim</button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tr>
+                        <td class="multiplier" colspan="2" id="quests_multiplier_label"></td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+
+        <tr id="aviary_block" style="display: none;">
+            <td colspan="5">
+
+                <table class="aviary" width="40%">
+                    <tr>
+                        <td colspan="2" class="title" id="aviary_title">Aviary</td>
+                    </tr>
+                    <tr>
+                        <td id="aviary_multiplier_label"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="display" id="aviary_display" width="70%"></td>
+                        <td>
+                            <button id="aviary_catch_button" class="button6_aviary_loading">Catch</button>
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+
+        <tr id="tower4_block">
+            <td colspan="5">
+                <table class="tower">
+
+                    <tr>
+                        <td class="title5_bottom_border" id="tower4_name_label">Tower of Dragons</td>
+                    </tr>
+
+                    <tbody id="tower4_body">
+
+
+                        <tr>
+                            <td>
+                                <button class="button1" id="dragon1_button"></button>
+                                <button class="button1" id="dragon2_button"></button>
+                                <button class="button1" id="dragon3_button"></button>
+                                <button class="button1" id="dragon4_button"></button>
+                                <button class="button1" id="dragon5_button"></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button class="tower4_bai" id="tower4_buy1">Buy 1</button>
+                                <button class="tower4_bai" id="tower4_buy10">Buy 10</button>
+                                <button class="tower4_bai" id="tower4_buy100">Buy 100</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="subtitle1" id="fire_multiplier_label"></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </td>
+        </tr>
+
+        <tr id="gandlor_block" style="display: none;">
+            <td colspan="5">
+                <table class="gandlor">
+                    <tr>
+                        <td id="gandlor_bet" class="bet">Bet: 4</td>
+                        <td id="gandlor_funds" class="funds">Coins: 5</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="gandlor_deuce1" class="gandlor_tile_back">
+                <img class="gandlor_cards" src="img/gandlor/back.svg" alt="">
+              </button>
+                            <button id="gandlor_deuce2" class="gandlor_tile_back">
+                <img class="gandlor_cards" src="img/gandlor/back.svg" alt="">
+              </button>
+                            <button id="gandlor_bonus0" class="gandlor_tile_empty">
+                <img class="gandlor_cards" src="img/gandlor/empty.svg" alt="">
+              </button>
+                            <button id="gandlor_bonus1" class="gandlor_tile_bonus">
+                <img class="gandlor_cards" src="img/gandlor/seer.svg" alt="">
+              </button>
+                            <button id="gandlor_bonus2" class="gandlor_tile_back">
+                <img class="gandlor_cards" src="img/gandlor/win_lf.svg" alt="">
+              </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="gandlor_wrap1" class="gandlor_tile_archon">
+                <img class="gandlor_cards" src="img/gandlor/archon1.svg" alt="">
+              </button>
+                            <button id="gandlor_wrap2" class="gandlor_tile_mushroom">
+                <img class="gandlor_cards" src="img/gandlor/mushroom.svg" alt="">
+              </button>
+                            <button id="gandlor_wrap3" class="gandlor_tile_orc">
+                <img class="gandlor_cards" src="img/gandlor/orc.svg" alt="">
+              </button>
+                            <button id="gandlor_wrap4" class="gandlor_tile_dragon">
+                <img class="gandlor_cards" src="img/gandlor/dragon.svg" alt="">
+              </button>
+                            <button id="gandlor_wrap5" class="gandlor_tile_swamp">
+                <img class="gandlor_cards" src="img/gandlor/swamp.svg" alt="">
+              </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="gandlor_deal" class="gandlor_deal" disabled="disabled">Deal</button>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+
+
+
+
+        <tr id="flask_block" style="display: none;">
+            <td colspan="5">
+
+                <table class="flask" width="60%">
+                    <tr>
+                        <td colspan="2" class="title" id="flask_title">Mystic Workshop</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="tabs">
+                            <button class="button8_tabs" id="flask_tab_flask">Flask</button>
+                            <button class="button8_tabs" id="flask_tab_ingredients">Known Ingredients</button>
+                            <button class="button8_tabs" id="flask_tab_recipes">Known Recipes</button>
+                        </td>
+                    </tr>
+
+                    <tbody id="tab_info_contents">
+                        <tr>
+                            <td class="text_left" id="flask_list" width="70%"></td>
+                            <td>
+
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody id="tab_flask_contents">
+                        <tr>
+                            <td id="flask_recipe" width="70%"></td>
+                            <td>
+                                <button id="flask_result" class="button6_flaskresult"></button>
+                                <table class="flask_confirm" id="flask_confirm_block">
+                                    <tr>
+                                        <td class="text_left"><button id="flask_confirm_button" class="button6_info">Make</button></td>
+                                        <td class="text_right"><button id="flask_cancel_button" class="button6_info">Cancel</button></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="flask_ingredients" class="ing_loading"></td>
+                            <td>
+                                <button id="flask_load" class="button6_flask_loading"></button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </td>
+        </tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--main towers-->
+        <tr id="maintowers_block">
+            <td width="20%">
+                <table class="tower">
+
+                    <tr id="gandlor_button_block">
+                        <td class="bottom">
+                            <button id="gc_button" class="button6_gc">Gandlor's Cave</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <button class="button_hammer" id="hammer_button">Hammer</button><br><br>
+
+                            <button class="button1" id="blacksmiths_button"></button><br>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <tr>
+                            <td class="bottom">
+                                <button class="tower0_bai" id="tower0_buy1">Buy 1</button>
+                                <button class="tower0_bai" id="tower0_buy10">Buy 10</button>
+                                <button class="tower0_bai" id="tower0_buy100">Buy 100</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="title7">Tower of Metals</td>
+                        </tr>
+
+                </table>
+            </td>
+            <td width="20%">
+                <table class="tower">
+
+                    <tbody id="tower1_body">
+
+                        <tr id="raiders_block">
+                            <td class="bottom">
+                                <button class="button_raiders_locations" id="raiders_location_next">></button>
+                                <button class="button_raiders_locations" id="raiders_location_button"></button><br>
+                                <button class="button_raiders" id="raiders_button" disabled></button><br>
+                                <button class="button_raiders_win" id="raiders_button_win" style="display: none;"></button>
+                            </td>
+                        </tr>
+
+                        <tr id="champs_block">
+                            <td class="bottom">
+                                <button class="button_champ" id="champ_weaklings_button"><img src="img/champ_weaklings.svg"></button>
+                                <button class="button_champ" id="champ_dwarves_button"><img src="img/champ_dwarves2.svg"></button>
+                                <button class="button_champ" id="champ_humans_button"><img src="img/champ_humans.svg"></button>
+                                <button class="button_champ" id="champ_ogres_button"><img src="img/champ_ogres.svg"></button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <button class="button1" id="weaklings_button" disabled></button>
+                                <button id="weaklings_drink_button" class="button_tower_drink"></button><br>
+
+                                <button class="button1" id="dwarves_button" disabled></button>
+                                <button id="dwarves_drink_button" class="button_tower_drink"></button><br>
+
+                                <button class="button1" id="humans_button" disabled></button>
+                                <button id="humans_drink_button" class="button_tower_drink"></button><br>
+
+                                <button class="button1" id="ogres_button" disabled></button>
+                                <button id="ogres_drink_button" class="button_tower_drink"></button><br>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="bottom">
+                                <button class="tower1_bai" id="tower1_buy1">Hire 1</button>
+                                <button class="tower1_bai" id="tower1_buy10">Hire 10</button>
+                                <button class="tower1_bai" id="tower1_buy100">Hire 100</button>
+                            </td>
+                        </tr>
+
+                        <tr id="tower1_fortifications">
+                            <td class="bottom">
+                                <button class="fort_button" id="fort_button_weaklings"><b>W</b>&#8679;&#xFE0E;</button>
+                                <button class="fort_button" id="fort_button_dwarves"><b>D</b>&#8679;&#xFE0E;</button>
+                                <button class="fort_button" id="fort_button_humans"><b>H</b>&#8679;&#xFE0E;</button>
+                                <button class="fort_button" id="fort_button_ogres"><b>Og</b>&#8679;&#xFE0E;</button>
+
+                                <table id="tower1_fortifications_confirm_block" class="fort_confirm" style="display:none">
+                                    <tr>
+                                        <td width="50%" class="text_left">
+                                            <button class="system_small" id="tower1_fort_confirm"></button>
+                                        </td>
+                                        <td width="50%" class="text_right">
+                                            <button class="system_small" id="tower1_fort_cancel">Cancel</button>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody id="tower1_lock">
+                        <tr>
+                            <td class="bottom">
+                                <span class="tiny">Hire <b>10 Blacksmiths</b> to unlock</span>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tr>
+                        <td class="title" id="tower1_name_label">Tower of Mortals</td>
+                    </tr>
+
+                </table>
+            </td>
+            <td width="20%" id="tower2_block">
+                <table class="tower">
+
+                    <tbody id="tower2_body">
+                        <tr id="dragonstower_button_block">
+                            <td class="bottom">
+                                <button id="dragonstower_button" class="button6_dt">Tower of Dragons</button>
+                            </td>
+                        </tr>
+                        <tr id="aviary_button_block">
+                            <td class="bottom">
+                                <button id="aviary_button" class="button6_av">Aviary</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button class="button1" id="wizards_button"></button>
+                                <button id="wizards_drink_button" class="button_tower_drink"></button><br>
+                                <button class="button1" id="warlocks_button"></button>
+                                <button id="warlocks_drink_button" class="button_tower_drink"></button><br>
+                                <button class="button1" id="witches_button"></button>
+                                <button id="witches_drink_button" class="button_tower_drink"></button><br>
+                                <button class="button1" id="wyverns_button"></button>
+                                <button id="wyverns_drink_button" class="button_tower_drink"></button><br>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="bottom">
+                                <button class="tower2_bai" id="tower2_buy1">Hire 1</button>
+                                <button class="tower2_bai" id="tower2_buy10">Hire 10</button>
+                                <button class="tower2_bai" id="tower2_buy100">Hire 100</button>
+                            </td>
+                        </tr>
+
+                        <tr id="tower2_fortifications">
+                            <td class="bottom">
+                                <button class="fort_button" id="fort_button_wizards"><b>Wz</b>&#8679;&#xFE0E;</button>
+                                <button class="fort_button" id="fort_button_warlocks"><b>Wr</b>&#8679;&#xFE0E;</button>
+                                <button class="fort_button" id="fort_button_witches"><b>Wi</b>&#8679;&#xFE0E;</button>
+                                <button class="fort_button" id="fort_button_wyverns"><b>Wy</b>&#8679;&#xFE0E;</button>
+
+                                <table id="tower2_fortifications_confirm_block" class="fort_confirm" style="display:none">
+                                    <tr>
+                                        <td width="50%" class="text_left">
+                                            <button class="system_small" id="tower2_fort_confirm"></button>
+                                        </td>
+                                        <td width="50%" class="text_right">
+                                            <button class="system_small" id="tower2_fort_cancel">Cancel</button>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody id="tower2_lock">
+                        <tr>
+                            <td class="bottom">
+                                <span class="tiny">Hire <b>10 Ogres</b> to unlock</span>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tr>
+                        <td class="title2" id="tower2_name_label">Tower of Mages</td>
+                    </tr>
+
+                </table>
+            </td>
+            <td width="20%" id="tower3_block">
+                <table class="tower">
+
+                    <tbody id="tower3_body">
+                        <tr>
+                            <td>
+                                <button class="button1" id="catapults_button"></button><br>
+                                <button class="button1" id="crossbows_button"></button><br>
+                                <button class="button1" id="cheiroballistras_button"></button><br>
+                                <button class="button_cannibals" id="cannibals_button"></button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="bottom">
+                                <button class="tower3_bai" id="tower3_buy1">Make 1</button>
+                                <button class="tower3_bai" id="tower3_buy10">Make 10</button>
+                                <button class="tower3_bai" id="tower3_buy100">Make 100</button>
+                            </td>
+                        </tr>
+
+                        <tr id="tower3_fortifications">
+                            <td class="bottom">
+                                <button class="fort_button" id="fort_button_catapults"><b>Ca</b>&#8679;&#xFE0E;</button>
+                                <button class="fort_button" id="fort_button_crossbows"><b>Cr</b>&#8679;&#xFE0E;</button>
+                                <button class="fort_button" id="fort_button_cheiroballistras"><b>Ch</b>&#8679;&#xFE0E;</button>
+                                <button class="fort_button" id="fort_button_cannibals"><b>Ch</b>&#8679;&#xFE0E;</button>
+
+                                <table id="tower3_fortifications_confirm_block" class="fort_confirm" style="display:none">
+                                    <tr>
+                                        <td width="50%" class="text_left">
+                                            <button class="system_small" id="tower3_fort_confirm"></button>
+                                        </td>
+                                        <td width="50%" class="text_right">
+                                            <button class="system_small" id="tower3_fort_cancel">Cancel</button>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody id="tower3_lock">
+                        <tr>
+                            <td class="bottom">
+                                <span class="tiny">Hire <b>10 Wyverns</b> to unlock</span>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tr>
+                        <td class="title4" id="tower3_name_label">Tower of Machines</td>
+                    </tr>
+
+                </table>
+            </td>
+            <td width="20%">
+                <table class="tower">
+
+
+                    <tr id="items_block">
+                        <td class="bottom">
+                            <button id="items_holder"></button><button id="items_lock" class="button6_lock">lock</button>
+                        </td>
+                    </tr>
+
+                    <tr id="flask_button_block">
+                        <td class="bottom">
+                            <button id="fl_button" class="button6_fl">Mystic Workshop</button>
+                        </td>
+
+                    </tr>
+
+                    <tr id="alchemist_buymax_block" style="display: none;">
+                        <td>
+                            <button class="tower5_buymax" id="tower5_buymax" disabled="disabled">Buy max</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td id="alchemist_upgrades">
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td class="title5_top_border">Alchemist</td>
+                    </tr>
+
+                </table>
+            </td>
+            </tr>
+
+
+
+            <tr id="winecellar_block">
+                <td colspan="5">
+
+                    <table class="tower">
+
+                        <tbody id="winecellar_body">
+                            <tr>
+                                <td class="info" id="drunken_multiplier_label"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="button1" id="cupsize_button"></button>
+                                    <button class="button1" id="wineage_button"></button>
+                                    <button class="button1" id="grapes_button"></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bottom">
+                                    <button class="winecellar_bai" id="winecellar_buy1">Buy 1</button>
+                                    <button class="winecellar_bai" id="winecellar_buy10">Buy 10</button>
+                                    <button class="winecellar_bai" id="winecellar_buy100">Buy 100</button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tbody id="winecellar_lock">
+                            <tr>
+                                <td class="bottom">
+                                    <span class="tiny">Hire <b>13 Dwarves</b> to unlock</span>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tr>
+                            <td class="title" id="winecellar_title">Wine Cellar</td>
+                        </tr>
+
+
+                    </table>
+
+                </td>
+            </tr>
+
+
+
+
+
+            <tr id="outerwall_block">
+                <td colspan="5">
+
+                    <table class="tower" width="30%">
+
+                        <tr>
+                            <td colspan="2" class="title3 bottom" id="outerwall_name_label">Outer Wall</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" class="title3" id="guards_of_the_wall">Guards of the Outer Wall:</td>
+                        </tr>
+                        <tr>
+                            <td id="medallions_label"></td>
+                        </tr>
+
+
+
+                    </table>
+                </td>
+            </tr>
+
+
 
     </table>
 
-    <div class="indicators">
 
-      <table class="indicators">
-        <tr>
-          <td>
-            <span class="counter" id="counter1_label"></span><br>
-            <span class="rate" id="rate1_label"></span>
-          </td>
-        </tr>
-      </table>
+
+
+
+
+
+
+
+
+    <div id="reincarnation_options_block" style="display:none;">
+
+
+
+        <table class="reincarnation_table" width="70%">
+
+            <tr style="text-align: center;">
+                <td colspan="2">
+                    <table width="100%" style="margin: auto;border:0px solid #fff">
+                        <tr>
+                            <td style="text-align: left;"><button class="reincarnation_upgrade" id="reincarnation_stay">Enter the Infinite Library</button></td>
+                            <td style="text-align: right;"><button class="reincarnation_upgrade" id="reincarnation_cancel">Back to the Finite World</button></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    &nbsp;
+                </td>
+            </tr>
+
+            <tr>
+                <td class="title" colspan="2" id="librarian_warning"></td>
+            </tr>
+
+            <tbody id="bookshelves_intro">
+                <tr>
+                    <td class="title" colspan="2">
+                        <div class="reincarnation_tome_page" id="reincarnation_library_card_explanation"></div><br><br>
+                        <button class="reincarnation_upgrade" id="reincarnation_unlock">Receive Your Library Card</button>
+                    </td>
+                </tr>
+
+            </tbody>
+
+            <tbody id="library_body">
+
+                <tr>
+                    <td class="title" colspan="2" id="library_greeting"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        &nbsp;
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="dykt" colspan="2" id="library_dykt"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        &nbsp;
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="funds" colspan="2" id="library_funds"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        &nbsp;
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        &nbsp;
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="tomes_list">
+                        <div class="tomes_holder" id="reincarnation_tomes"></div>
+                    </td>
+                    <td class="tome_page">
+                        <div class="reincarnation_tome_page" id="reincarnation_tome_page"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        &nbsp;
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        &nbsp;
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="title" colspan="2">
+                        <button class="reincarnation_upgrade" id="reincarnation_noupgrades">Complete Transmigration</button>
+                    </td>
+                </tr>
+
+
+
+
+            </tbody>
+
+        </table>
+
+
+        <br><br>
+
+
+
+
+
 
     </div>
-    
-  </div>
-
-
-  
-
-  <table class="towers_holder">
-
-    <tr id="quests_block">
-      <td colspan="4">
-
-        <table class="quests">
-          <tbody id="quests_body">
-            <tr>
-              <td class="title" colspan="2">Wicked Quests</td>
-            </tr>
-            <tr>
-              <td>
-                66 Weaklings
-                <div id="quest1_label"></div>
-                <button class="button2" id="quest1_button">Claim</button>
-              </td>
-              <td>
-                66 Dwarves
-                <div id="quest2_label"></div>
-                <button class="button2" id="quest2_button">Claim</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                66 Humans
-                <div id="quest3_label"></div>
-                <button class="button2" id="quest3_button">Claim</button>
-              </td>
-              <td>
-                66 Ogres
-                <div id="quest4_label"></div>
-                <button class="button2" id="quest4_button">Claim</button>
-              </td>
-            </tr>
-          </tbody>
-          
-          <tr>
-            <td class="multiplier" colspan="2" id="quests_multiplier_label"></td>
-          </tr>
-        </table>
-
-      </td>
-    </tr>
-
-    <tr>
-      <td colspan="4">
-
-        <table class="tower" width="85%">
-          <tr>
-            <td class="title3" colspan="2">Courtyard</td>
-          </tr>
-          <tr>
-            <td class="bottom" width="25%">
-              <button class="messenger" id="messenger_button"></button>
-              <div class="tiny" id="next_messenger_label"></div>
-              <button class="button_hammer" id="messenger_bonus_button"><span class="tiny">Fresh horses!</span></button>
-              <button class="achievement_button" id="collect_medallions_button"></button>
-              <button class="courtyard_info_button" id="courtyard_info_button"></button>
-            </td>
-            <td class="bottom">
-              <table class="courtyard" width="100%">
-                <tr>
-                  <td width="90%" id="medallions_label"></td>
-                </tr>
-                <tr>
-                  <td>&nbsp;</td>
-                </tr>
-                <tr>
-                  <td><span class="small_purple">Alchemist</span></td>
-                </tr>
-                <tbody id="alchemist_body">
-                  <tr>
-                    <td>
-                      <button class="button6" id="alchemist_upgrade_button"></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td id="alchemist_upgrades"></td>
-                  </tr>
-                </tbody>
-                <tbody id="alchemist_lock">
-                  <tr>
-                    <td class="tiny">Collect <b>3 Medallions</b> to unlock</td>
-                  </tr>
-                </tbody>
-                
-              </table>
-            </td>
-          </tr>
-          <tr id="garden_block" style="display:none;">
-            <td colspan="2" class="bottom">
-              <div class="small_green">Garden</div>
-              <button id="tree_button" class="button_tree">Seed</button>
-            </td>
-          </tr>
-        </table>
-
-      </td>
-    </tr>
-
-    <tr id="tower4_block">
-      <td colspan="4">
-        <table class="tower">
-
-          <tr>
-            <td class="title5" id="tower4_name_label">Tower of Dragons</td>
-          </tr>
-
-          <tbody id="tower4_body">
-            
-
-            <tr>
-              <td>
-                <button class="button1" id="dragon1_button"></button>
-                <button class="button1" id="dragon2_button"></button>
-                <button class="button1" id="dragon3_button"></button>
-                <button class="button1" id="dragon4_button"></button>
-                <button class="button1" id="dragon5_button"></button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <button class="tower4_bai" id="tower4_buy1">Buy 1</button>
-                <button class="tower4_bai" id="tower4_buy10">Buy 10</button>
-                <button class="tower4_bai" id="tower4_buy100">Buy 100</button>
-              </td>
-            </tr>
-            <tr>
-              <td class="subtitle1" id="fire_multiplier_label"></td>
-            </tr>
-          </tbody>
-
-          <tbody id="tower4_lock">
-            <tr>
-              <td class="bottom">
-                <span class="tiny">Make <b>100 Crossbows</b> to unlock</span>
-              </td>
-            </tr>
-          </tbody>
-
-        </table>
-      </td>
-    </tr>
-
-    <!--main towers-->
-    <tr>
-      <td width="25%">
-        <table class="tower">
-
-          <tr>
-            <td class="title7">Tower of Metals</td>
-          </tr>
-
-          <tr>
-            <td>
-              <button class="button_hammer" id="hammer_button">Hammer</button><br><br>
-              <button class="button1" id="ore_button"></button><br>
-              <button class="button1" id="mine_button"></button><br>
-            </td>
-          </tr>
-
-          <tr>
-          <tr>
-            <td class="bottom">
-              <button class="tower0_bai" id="tower0_buy1">Buy 1</button>
-              <button class="tower0_bai" id="tower0_buy10">Buy 10</button>
-              <button class="tower0_bai" id="tower0_buy100">Buy 100</button>
-            </td>
-          </tr>
-
-        </table>
-      </td>
-      <td width="25%">
-        <table class="tower">
-
-          <tr>
-            <td class="title" id="tower1_name_label">Tower of Mortals</td>
-          </tr>
-
-          <tr>
-            <td>
-              <button class="button1" id="weaklings_button" disabled></button>
-              <button id="weaklings_drink_button" class="button_tower_drink"></button><br>
-
-              <button class="button1" id="dwarves_button" disabled></button>
-              <button id="dwarves_drink_button" class="button_tower_drink"></button><br>
-
-              <button class="button1" id="humans_button" disabled></button>
-              <button id="humans_drink_button" class="button_tower_drink"></button><br>
-
-              <button class="button1" id="ogres_button" disabled></button>
-              <button id="ogres_drink_button" class="button_tower_drink"></button><br>
-            </td>
-          </tr>
-
-          <tr>
-            <td class="bottom">
-              <button class="tower1_bai" id="tower1_buy1">Hire 1</button>
-              <button class="tower1_bai" id="tower1_buy10">Hire 10</button>
-              <button class="tower1_bai" id="tower1_buy100">Hire 100</button>
-            </td>
-          </tr>
-
-        </table>
-      </td>
-      <td width="25%" id="tower2_block">
-        <table class="tower">
-
-          <tr>
-            <td class="title2" id="tower2_name_label">Tower of Mages</td>
-          </tr>
-
-          <tbody id="tower2_body">
-            <tr>
-              <td>
-                <button class="button1" id="wizards_button"></button>
-                <button id="wizards_drink_button" class="button_tower_drink"></button><br>
-                <button class="button1" id="warlocks_button"></button>
-                <button id="warlocks_drink_button" class="button_tower_drink"></button><br>
-                <button class="button1" id="witches_button"></button>
-                <button id="witches_drink_button" class="button_tower_drink"></button><br>
-                <button class="button1" id="wyverns_button"></button>
-                <button id="wyverns_drink_button" class="button_tower_drink"></button><br>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="bottom">
-                <button class="tower2_bai" id="tower2_buy1">Hire 1</button>
-                <button class="tower2_bai" id="tower2_buy10">Hire 10</button>
-                <button class="tower2_bai" id="tower2_buy100">Hire 100</button>
-              </td>
-            </tr>
-          </tbody>
-
-          <tbody id="tower2_lock">
-            <tr>
-              <td class="bottom">
-                <span class="tiny">Hire <b>100 Weaklings</b> to unlock</span>
-              </td>
-            </tr>
-          </tbody>
-
-        </table>
-      </td>
-      <td width="25%" id="tower3_block">
-        <table class="tower">
-
-          <tr>
-            <td class="title4" id="tower3_name_label">Tower of Machines</td>
-          </tr>
-
-          <tbody id="tower3_body">
-            <tr>
-              <td>
-                <button class="button1" id="catapults_button"></button><br>
-                <button class="button1" id="crossbows_button"></button><br>
-                <button class="button1" id="cheiroballistras_button"></button><br>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="bottom">
-                <button class="tower3_bai" id="tower3_buy1">Make 1</button>
-                <button class="tower3_bai" id="tower3_buy10">Make 10</button>
-                <button class="tower3_bai" id="tower3_buy100">Make 100</button>
-              </td>
-            </tr>
-          </tbody>
-
-          <tbody id="tower3_lock">
-            <tr>
-              <td class="bottom">
-                <span class="tiny">Hire <b>100 Wizards</b> to unlock</span>
-              </td>
-            </tr>
-          </tbody>
-
-        </table>
-      </td>
-    </tr>
 
 
 
-    <tr id="winecellar_block">
-      <td colspan="4">
-
-        <table class="tower">
-          <tr>
-            <td class="title">Wine Cellar</td>
-          </tr>
-
-          <tbody id="winecellar_body">
-          <tr>
-            <td>
-              <table class="bar">
-                <tr>
-                  <td>Weaklings</td>
-                  <td>Dwarves</td>
-                  <td>Humans</td>
-                  <td>Ogres</td>
-                </tr>
-                <tr>
-                  <td><button class="button2" id="drink_weaklings">+</button></td>
-                  <td><button class="button2" id="drink_dwarves">+</button></td>
-                  <td><button class="button2" id="drink_humans">+</button></td>
-                  <td><button class="button2" id="drink_ogres">+</button></td>
-                </tr>
-                <tbody id="winecellar_mages_block">
-                  <tr>
-                    <td>Wizards</td>
-                    <td>Warlocks</td>
-                    <td>Witches</td>
-                    <td>Wyverns</td>
-                  </tr>
-                  <tr>
-                    <td><button class="button2" id="drink_wizards">+</button></td>
-                    <td><button class="button2" id="drink_warlocks">+</button></td>
-                    <td><button class="button2" id="drink_witches">+</button></td>
-                    <td><button class="button2" id="drink_wyverns">+</button></td>
-                  </tr>
-                </tbody>
-                <tr>
-                  <td class="info" colspan="4" id="drunken_multiplier_label"></td>
-                </tr>
-                
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <button class="button1" id="wineage_button"></button>
-              <button class="button1" id="cupsize_button"></button>
-              <button class="button1" id="grapes_button"></button>
-            </td>
-          </tr>
-          <tr>
-            <td class="bottom">
-              <button class="winecellar_bai" id="winecellar_buy1">Buy 1</button>
-              <button class="winecellar_bai" id="winecellar_buy10">Buy 10</button>
-              <button class="winecellar_bai" id="winecellar_buy100">Buy 100</button>
-            </td>
-          </tr>
-          </tbody>
-
-          <tbody id="winecellar_lock">
-            <tr>
-              <td class="bottom">
-                <span class="tiny">Hire <b>5 Weaklings</b> to unlock</span>
-              </td>
-            </tr>
-          </tbody>
 
 
-        </table>
 
-      </td>
-    </tr>
 
-    <tr id="hog_block">
-      <td colspan="4">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
-        <table class="tower">
-          <tr>
-            <td class="title2">Hall of Giants</td>
-          </tr>
 
-          <tbody id="hog_body">
-            
 
-            <tr>
-              <td>
-                <table class="hog">
-                  <tr>
-                    <td colspan="4" class="multiplier" id="hog_multiplier_label"></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="block1" id="giant1_button"></div>
-                      <button class="button4" id="diamonds1_button"></button>
-                    </td>
-                    <td>
-                      <div class="block1" id="giant2_button"></div>
-                      <button class="button4" id="diamonds2_button"></button>
-                    </td>
-                    <td>
-                      <div class="block1" id="giant3_button"></div>
-                      <button class="button4" id="diamonds3_button"></button>
-                    </td>
-                    <td>
-                      <div class="block1" id="giant4_button"></div>
-                      <button class="button4" id="diamonds4_button"></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="block1" id="giant5_button"></div>
-                      <button class="button4" id="diamonds5_button"></button>
-                    </td>
-                    <td>
-                      <div class="block1" id="giant6_button"></div>
-                      <button class="button4" id="diamonds6_button"></button>
-                    </td>
-                    <td>
-                      <div class="block1" id="giant7_button"></div>
-                      <button class="button4" id="diamonds7_button"></button>
-                    </td>
-                    <td>
-                      <div class="block1" id="giant8_button"></div>
-                      <button class="button4" id="diamonds8_button"></button>
-                    </td>
-                  </tr>
+    <button id="collect_medallions_button" style="display:none;"></button>
+    <button id="frogs_button" style="display:none;"></button>
+    <button class="messenger" id="messenger_button" style="display:none;"></button>
+    <button class="notifications" id="notifications_button" style="display:none;"></button>
+    <div id="garden_tooltip" style="display:none"></div>
+    <div id="fort_tooltip" style="display:none"></div>
+    <div id="gc_tooltip" style="display:none"></div>
+    <div id="item_tooltip" style="display:none"></div>
+    <div id="temple_tooltip" style="display:none"></div>
+    <div id="location_tooltip" style="display:none"></div>
+    <div id="loot_tooltip" style="display:none"></div>
+    <div id="alchemist_tooltip" style="display:none"></div>
+    <div id="necromancer_tooltip" style="display:none"></div>
+    <div id="champ_tooltip" style="display:none"></div>
+    <div id="ingredient_tooltip" style="display:none"></div>
+
+    <!--footer-->
+    <div class="footer">
+
+        <div class="garden" id="garden_block" style="display:none;">
+            <!--<button class="button_tree" id="button_tree">&#127796;&#xFE0E;</button><br>-->
+            <button class="button_tree" id="button_tree"><span class="yellow">&#128293;&#xFE0E;</span></button><br>
+            <div class="indicator_tree" id="indicator_tree">0</div>
+        </div>
+
+        <div class="footer_contents">
+            <div id="settings_block" style="display:none">
+                <table class="settings">
+                    <tr>
+                        <td>
+                            Audio
+                        </td>
+                        <td>
+                            <button class="system" id="button_audio">Turn it off</button>
+                        </td>
+                    </tr>
+                    <tr id="audio_messenger_block">
+                        <td>
+                            Messenger alerts
+                        </td>
+                        <td>
+                            <button class="system" id="button_audio_messenger">Turn it off</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Volume <input type="range" class="lever" id="audio_control_volume" value="0.5" step="0.1" min="0" max="1"></td>
+                        <td class="empty">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Scientific notation
+                        </td>
+                        <td>
+                            <button class="system" id="button_scientific">Toggle</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Copy save
+                        </td>
+                        <td>
+                            <button class="system" id="button_copysave">Copy</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Import save<br>
+                            <div class="textarea" contenteditable="true" id="import_save_dump"></div>
+                        </td>
+                        <td>
+                            <button class="system" id="button_importsave">Import</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button class="system" id="button_delsave">Delete save</button>
+                            <table id="save_del_confirm_block" class="settings_confirm" style="display:none">
+                                <tr>
+                                    <td colspan="2">
+                                        Deleting your save resets all progress
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" class="text_left">
+                                        <button class="system_small" id="save_del_cancel">Cancel</button>
+                                    </td>
+                                    <td width="50%" class="text_right">
+                                        <button class="system_small" id="save_del_confirm">Yes please</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
-              </td>
-            </tr>
-            <tr>
-              <td class="bottom_centered">
-                <button class="button3" id="recast_button">Recast Giants</button>
-              </td>
-            </tr>
-          </tbody>
-
-          <tbody id="hog_lock">
-            <tr>
-              <td class="bottom">
-                <span class="tiny">Falkor at <b>Level 50</b> to unlock</span>
-              </td>
-            </tr>
-          </tbody>
-
-        </table>
-
-      </td>
-    </tr>
-
-    <tr id="graveyard_block">
-      <td colspan="4">
-
-        <table class="tower">
-          <tr>
-            <td class="title3">Graveyard</td>
-          </tr>
-
-          <tbody id="graveyard_body">
-            
-            <tr>
-              <td>
-                <table class="graveyard">
-                  <tr>
-                    <td colspan="4" class="multiplier">
-                      <div id="graveyard_multiplier_label"></div>
-                      <button class="button5" id="next_target_button"></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="multiplier">
-                      <div class="block2" id="da1_block"></div>
-                    </td>
-                    <td class="multiplier">
-                      <div class="block2" id="da2_block"></div>
-                    </td>
-                    <td class="multiplier">
-                      <div class="block2" id="da3_block"></div>
-                    </td>
-                    <td class="multiplier">
-                      <div class="block2" id="da4_block"></div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" class="multiplier">
-                      <button class="button5" id="next_da_button">>>></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="4">
-                      <div class="counter" id="graveyard_counter_label"></div>
-                      <div class="rate" id="graveyard_rate_label"></div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="4">
-                      <button class="button1" id="skeletons_button">Skeletons: 0</button>
-                      <button class="button1" id="spirits_button">Spirits: 0</button>
-                      <button class="button1" id="specters_button">Specters: 0</button>
-                      <button class="button1" id="succubi_button">Succubi: 0</button>
-                    </td>
-                  </tr>
+            </div>
+            <div id="guide_block" style="display:none">
+                <table class="settings">
+                    <tr>
+                        <td id="guide_page">Scraps of Ancient Knowledge</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="guide">Transmigration</button>
+                            <button id="wicked_guide_button" class="guide">Wicked Quests</button>
+                            <button id="hog_guide_button" class="guide">Hall of Giants</button>
+                            <button id="fort_guide_button" class="guide">Fortifications</button>
+                            <br>
+                            <button id="museum_guide_button" class="guide">Treasury</button>
+                            <button id="gc_guide_button" class="guide">Gandlor's Cave</button>
+                            <button id="cannibals_guide_button" class="guide">Cannibals</button>
+                            <button id="aviary_guide_button" class="guide">Aviary</button>
+                            <button id="raiders_guide_button" class="guide">Raiders</button>
+                            <button id="graveyard_guide_button" class="guide">Necropolis</button>
+                            <br>
+                            <button class="guide">Compatibility</button>
+                            <button class="guide">Mobile Experience</button>
+                            <button class="guide">Credits</button>
+                            <button class="guide">Donate</button>
+                        </td>
+                    </tr>
                 </table>
-              </td>
-            </tr>
+            </div>
+            <span class="footer_item1"><button class="system" id="button_settings">Settings</button></span>
+            <span class="footer_item1"><button class="system" id="button_guide">Guide</button></span>
+            <span class="footer_item1"><button class="system" id="button_save">Save Game</button></span>
 
-            <tr>
-              <td class="bottom">
-                <button class="graveyard_bai" id="graveyard_buy1">Raise 1</button>
-                <button class="graveyard_bai" id="graveyard_buy10">Raise 10</button>
-                <button class="graveyard_bai" id="graveyard_buy100">Raise 100</button>
-              </td>
-            </tr>
-
-          </tbody>
-
-          <tbody id="graveyard_lock">
-            <tr>
-              <td class="bottom">
-                <span class="tiny">Buy <b>all diamonds</b> to unlock</span>
-              </td>
-            </tr>
-          </tbody>
-
-        </table>
-
-      </td>
-    </tr>
-
-
-
-  </table>
+            <span class="signature">    
+        <span class="footer_item1"><a class="lv_discord" href="https://discord.gg/AVHRPhJ" target="_blank">Join our Discord</a></span>
+            <span class="footer_item1"><a class="lv_donate" href="https://www.paypal.com/donate/?hosted_button_id=ZGZTBFH4PTGDU" target="_blank">Support Louigi 💚&#xFE0E;</a></span>
+            <span class="footer_item2"><a class="lv_site" href="https://louigiverona.com/?page=about" target="_blank">Louigi Verona's Workshop</a></span></span>
+        </div>
 
 
 
 
-
-
-
-
-
-
-
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-
-  <!--footer-->
-  <div class="footer">
-    <div id="settings_block" style="display:none">
-      <table class="settings">
-        <tr>
-          <td>
-            Audio
-          </td>
-          <td>
-            <button class="system" id="button_audio">Turn it off</button>
-          </td>
-        </tr>
-        <tr>
-        <td>Volume <input type="range" class="lever" id="audio_control_volume" value="0.5" step="0.1" min="0" max="1"></td>
-        <td class="empty">&nbsp;</td>
-      </tr>
-        <tr>
-          <td>
-            Scientific notation
-          </td>
-          <td>
-            <button class="system" id="button_scientific">Toggle</button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Copy save
-          </td>
-          <td>
-            <button class="system" id="button_copysave">Copy</button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Import save<br>
-            <div class="textarea" contenteditable="true" id="import_save_dump"></div>
-          </td>
-          <td>
-            <button class="system" id="button_importsave">Import</button>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2"><button class="system" id="button_delsave">Delete save</button> (resets all progress)</td>
-        </tr>
-      </table>
     </div>
-    <div id="guide_block" style="display:none">
-      <table class="settings">
-        <tr>
-          <td id="guide_page">Pick a topic...</td>
-        </tr>
-        <tr>
-          <td>
-            <button class="guide">Messengers</button>
-            <button class="guide">Reincarnation</button>
-            <button class="guide">Wine Cellar</button>
-            <button class="guide">Medallions</button>
-            <button class="guide">Alchemist</button>
-            <button class="guide">Wicked Quests</button>
-
-            <button class="guide">Fire Multiplier</button>
-            <button class="guide">Giant Multiplier</button>
-            <button class="guide">Diamonds</button>
-            <button class="guide">Graveyard</button>
-            <button class="guide">Smaug</button>
-            <br>
-            <button class="guide">Offline mining</button>
-            <button class="guide">End of content</button>
-            <button class="guide">Compatibility</button>
-            <button class="guide">Known issues</button>
-            <button class="guide">Future plans</button>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <span class="footer_item1"><button class="system" id="button_settings">Settings</button></span>
-    <span class="footer_item1"><button class="system" id="button_guide">Guide</button></span>
-    <span class="footer_item1"><button class="system" id="button_save">Save Game</button></span>
-
-    <span class="signature"><span class="footer_item1"><a class="lv_discord" href="https://discord.gg/AVHRPhJ" target="_blank">Join our Discord</a></span><span class="footer_item2"><a class="lv_site" href="https://louigiverona.com/?page=about" target="_blank">Louigi Verona's Workshop</a></span></span>
-  </div>
-<!--客服 开始-->
-<link rel="stylesheet" href="//g8hh.github.io/static/css/kf.css" type="text/css" media="screen" charset="utf-8">
-<script src="//g8hh.github.io/static/js/kf.js"></script>
-<!-- 客服 结束 -->
-<!--站长统计-->
+    <!--客服 开始-->
+    <link rel="stylesheet" href="//g8hh.github.io/static/css/kf.css" type="text/css" media="screen" charset="utf-8">
+    <script src="//g8hh.github.io/static/js/kf.js"></script>
+    <!-- 客服 结束 -->
+    <!--站长统计-->
     <div style="display: none">
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?828597e93cee632465679b7ef35edfd5";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>    </div>
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?828597e93cee632465679b7ef35edfd5";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    </div>
+
 </body>
+
 </html>
