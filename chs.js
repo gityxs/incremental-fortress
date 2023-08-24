@@ -249,7 +249,7 @@ var cnItems = {
     "scraps of ancient knowledge": "古代知识的碎片",
     "Special thanks goes to my Discord crew. Their enthusiasm for the game was very inspiring and helped me get through months of development. And then everyone spent weeks play testing and providing detailed feedback and ideas.": "特别感谢我的 Discord 团队。 他们对游戏的热情非常鼓舞人心，帮助我度过了几个月的开发过程。 然后每个人都花了几周的时间进行测试并提供详细的反馈和想法。",
     "Stephen Challener (Redshrike)": "史蒂芬·查勒纳（红鹩莺）",
-    "Support Louigi 💚︎": "支持路易吉💚︎",
+    "Support Louigi 💚︎": "支持 Louigi💚︎",
     "The recommended amount for first transmigration is 22. The minimum amount which would at all make sense is 4, allowing you to purchase \"The Infinite Rulebook\" and \"Empowerment\"": "第一次穿越的推荐数量是22。最低数量是4，可以购买“无限规则书”和“赋能”",
     "The thing you cannot currently do is click on the hammer quickly without activating zooming in, but I am planning to address it at some point.": "目前您无法做的就是快速单击锤子而不激活放大，但我计划在某个时候解决这个问题。",
     "Tip: if the element has a tooltip, like Alchemist upgrades, a long press on an element will show the tooltip without activating the element.": "提示：如果元素有工具提示，例如炼金术士升级，长按元素将显示工具提示，而不激活该元素。",
