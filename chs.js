@@ -896,6 +896,7 @@ var cnRegReplace = new Map([
     [/^You are gaining (.+) elves per second$/, '你每秒获得 $1 精灵'],
     [/^You have (.+) points$/, '你有 $1 点数'],
     [/^Next at (.+) points$/, '下一个在 $1 点数'],
+    [/^at (.+) Mana$/, '在 $1 法力'],
     [/^Ale Mug Class (.+)$/, '啤酒杯等级 $1'],
     [/^Junior Tankard Class (.+)$/, '少年大啤酒杯等级 $1'],
     [/^Goblet Class (.+)$/, '高脚杯等级 $1'],
